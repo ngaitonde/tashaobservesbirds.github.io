@@ -127,7 +127,7 @@ dates.forEach((date, idx) => {
       </div>
       <!-- Text block -->
       <div class="col-span-12 lg:col-span-4 ${isReversed ? 'lg:order-1' : ''} flex flex-col justify-center lg:pl-8">
-        <span class="text-secondary dark:text-stone-400 font-label uppercase tracking-[0.2em] text-xs mb-2 block">${date === "Undated" ? "Flickr" : date}</span>
+        <span class="text-secondary dark:text-stone-400 font-label uppercase tracking-[0.2em] text-xs mb-2 block">${date === "Undated" ? "Field Notes" : date}</span>
         <h2 class="font-headline text-3xl text-primary dark:text-primary-fixed-dim mb-4">${titles.length > 0 ? titles.slice(0, 3).join(", ") : "Observations"}</h2>
         ${places.length > 0 ? `<p class="text-on-surface-variant dark:text-stone-400 text-sm leading-relaxed mb-4">${places.join(" · ")}</p>` : ''}
         <p class="text-on-surface-variant dark:text-stone-500 text-sm leading-relaxed mb-6 italic">

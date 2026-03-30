@@ -75,12 +75,7 @@ body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
 
   <!-- ══ TOOLBAR ══ -->
   <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
-    <!-- Source filters -->
-    <div class="flex flex-wrap gap-3" id="source-filters">
-      <button class="filter-pill active px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest" data-source="all">All <span class="opacity-60 ml-1" id="count-all"></span></button>
-      <button class="filter-pill px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest" data-source="instagram">Instagram <span class="opacity-60 ml-1" id="count-ig"></span></button>
-      <button class="filter-pill px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest" data-source="flickr">Flickr <span class="opacity-60 ml-1" id="count-fl"></span></button>
-    </div>
+    <div></div>
     <!-- Sort -->
     <div class="flex items-center gap-3">
       <span class="font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400">Sort</span>
@@ -124,7 +119,7 @@ body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
         <span id="lb-date" class="text-white/60 text-sm font-label uppercase tracking-widest"></span>
         <span id="lb-place" class="text-white/60 text-sm font-label uppercase tracking-widest"></span>
       </div>
-      <span id="lb-source" class="inline-block mt-2 text-white/40 text-[10px] font-label uppercase tracking-widest"></span>
+
     </div>
   </div>
 </div>
@@ -155,7 +150,7 @@ const lbImg = document.getElementById("lb-img");
 const lbTitle = document.getElementById("lb-title");
 const lbDate = document.getElementById("lb-date");
 const lbPlace = document.getElementById("lb-place");
-const lbSource = document.getElementById("lb-source");
+
 
 let currentFilter = "all";
 let currentSort = "name-asc";
@@ -163,9 +158,7 @@ let filteredPhotos = [];
 let lbIndex = 0;
 
 // Counts
-document.getElementById("count-all").textContent = `(${PHOTOS.length})`;
-document.getElementById("count-ig").textContent = `(${PHOTOS.filter(p => p.source === "instagram").length})`;
-document.getElementById("count-fl").textContent = `(${PHOTOS.filter(p => p.source === "flickr").length})`;
+
 
 function formatDate(d) {
   if (!d) return "";
@@ -193,7 +186,7 @@ function sortPhotos(photos, sort) {
 }
 
 function renderGallery() {
-  const filtered = currentFilter === "all" ? PHOTOS : PHOTOS.filter(p => p.source === currentFilter);
+  const filtered = PHOTOS;
   filteredPhotos = sortPhotos(filtered, currentSort);
 
   if (filteredPhotos.length === 0) {
@@ -207,7 +200,6 @@ function renderGallery() {
     const title = p.title || "Observation";
     const date = formatDate(p.date);
     const place = p.place || "";
-    const sourceLabel = p.source === "instagram" ? "Instagram" : "Flickr";
     const linkOpen = p.flickrUrl ? `<a href="${p.flickrUrl}" target="_blank" rel="noreferrer" class="absolute top-3 right-3 z-10 bg-black/40 hover:bg-black/60 text-white/80 hover:text-white rounded-full w-8 h-8 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-base">open_in_new</span></a>` : "";
 
     return `
@@ -220,7 +212,7 @@ function renderGallery() {
         <div class="card-info">
           <h3 class="font-['Noto_Serif'] text-white font-bold text-base leading-snug mb-1">${title}</h3>
           ${date || place ? `<p class="text-white/70 text-xs font-label uppercase tracking-widest">${[date, place].filter(Boolean).join(" · ")}</p>` : ""}
-          <span class="text-white/40 text-[10px] font-label uppercase tracking-widest mt-1 block">${sourceLabel}</span>
+
         </div>
       </div>
     `;
@@ -228,14 +220,7 @@ function renderGallery() {
 }
 
 // ── Filters ──
-document.getElementById("source-filters").addEventListener("click", e => {
-  const btn = e.target.closest(".filter-pill");
-  if (!btn) return;
-  document.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  currentFilter = btn.dataset.source;
-  renderGallery();
-});
+
 
 // ── Sort ──
 document.getElementById("sort-select").addEventListener("change", e => {
@@ -261,7 +246,7 @@ function updateLightbox() {
   lbTitle.textContent = p.title || "Observation";
   lbDate.textContent = formatDate(p.date);
   lbPlace.textContent = p.place || "";
-  lbSource.textContent = p.source === "instagram" ? "Instagram" : "Flickr";
+
 }
 
 grid.addEventListener("click", e => {
