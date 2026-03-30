@@ -45,25 +45,34 @@ body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
 <main class="pt-32 px-8 max-w-screen-2xl mx-auto">
 
   <!-- HEADER -->
-  <header class="mb-16 max-w-3xl">
-    <span class="font-label text-secondary dark:text-stone-400 uppercase tracking-[0.2em] text-xs mb-4 block">Field Photography</span>
+  <header class="mb-12 max-w-3xl">
+    <span class="font-label text-secondary dark:text-stone-400 uppercase tracking-[0.2em] text-xs mb-4 block">Species Record</span>
     <h1 class="font-headline font-black text-6xl text-primary dark:text-primary-fixed-dim leading-tight mb-6 tracking-tight">
-      The Gallery of<br/><span class="italic font-normal">Avian Observation</span>
+      The Life List
     </h1>
     <p class="text-on-surface-variant dark:text-stone-400 text-lg leading-relaxed max-w-xl">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.
     </p>
   </header>
 
-  <!-- FILTERS -->
-  <div class="flex flex-wrap gap-3 mb-10" id="filters">
-    <button class="filter-btn is-active px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">All</button>
-    <button class="filter-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all" data-filter="instagram">Instagram</button>
-    <button class="filter-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all" data-filter="flickr">Flickr</button>
-  </div>
+  <!-- STATS -->
+  <div class="flex gap-8 mb-10" id="stats"></div>
 
-  <!-- BENTO GRID GALLERY -->
-  <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-20" id="gallery"></div>
+  <!-- TABLE -->
+  <div class="overflow-x-auto pb-20">
+    <table class="w-full text-left border-collapse" id="lifelist-table">
+      <thead>
+        <tr class="border-b-2 border-[#154212]/20 dark:border-[#386b35]/30">
+          <th class="sortable py-3 pr-4 font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 cursor-pointer select-none hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" data-sort="index">#</th>
+          <th class="sortable py-3 pr-4 font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 cursor-pointer select-none hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" data-sort="species">Species <span class="sort-arrow"></span></th>
+          <th class="sortable py-3 pr-4 font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 cursor-pointer select-none hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" data-sort="date">First Seen <span class="sort-arrow"></span></th>
+          <th class="sortable py-3 pr-4 font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 cursor-pointer select-none hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" data-sort="location">Location <span class="sort-arrow"></span></th>
+          <th class="sortable py-3 pr-4 font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 cursor-pointer select-none hover:text-[#154212] dark:hover:text-[#386b35] transition-colors text-right" data-sort="count">Sightings <span class="sort-arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody id="lifelist-body"></tbody>
+    </table>
+  </div>
 
   <!-- SOCIAL -->
   <section class="mt-12 mb-12 py-20 bg-surface-container-low dark:bg-[#252522] rounded-xl px-12">
@@ -106,65 +115,142 @@ body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
 </footer>
 
 <style>
-.filter-btn{ background:rgba(255,255,255,0.7); color:#77574d; border:1px solid transparent; }
-.filter-btn.is-active,.filter-btn:hover{ background:#002b02; color:#fff; }
-.dark .filter-btn{ background:rgba(255,255,255,0.08); color:#a8a29e; }
-.dark .filter-btn.is-active,.dark .filter-btn:hover{ background:#386b35; color:#fff; }
+#lifelist-table tbody tr{ border-bottom:1px solid rgba(114,121,110,0.12); }
+.dark #lifelist-table tbody tr{ border-bottom:1px solid rgba(255,255,255,0.06); }
+#lifelist-table tbody tr:hover{ background:rgba(21,66,18,0.04); }
+.dark #lifelist-table tbody tr:hover{ background:rgba(56,107,53,0.08); }
+.sort-arrow{ font-size:10px; opacity:0.5; }
+.stat-card{ background:rgba(255,255,255,0.7); border:1px solid rgba(114,121,110,0.12); }
+.dark .stat-card{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); }
 </style>
 
 <script src="data.js"></script>
 <script>
-const gallery = document.getElementById("gallery");
+// ── Normalize species names ──
+const EXCLUDE = new Set(["squirrel"]);
 
-// Bento-grid span patterns (repeating cycle of 6)
-const SPANS = [
-  "md:col-span-8", // wide
-  "md:col-span-4", // narrow
-  "md:col-span-4", // narrow
-  "md:col-span-4", // narrow
-  "md:col-span-4", // narrow
-  "md:col-span-12", // full-width split
-];
-
-function renderGallery(filter) {
-  const list = filter === "all" ? PHOTOS : PHOTOS.filter(p => p.source === filter);
-  gallery.innerHTML = list.map((p, i) => {
-    const span = SPANS[i % SPANS.length];
-    const aspect = span === "md:col-span-8" ? "aspect-[16/9]" :
-                   span === "md:col-span-12" ? "aspect-[21/9]" : "aspect-square";
-    const tag = p.flickrUrl ? "a" : "div";
-    const linkAttr = p.flickrUrl ? ` href="${p.flickrUrl}" target="_blank" rel="noreferrer"` : "";
-    return `
-      <${tag} class="${span} group rounded-lg editorial-shadow bg-surface-container-low dark:bg-[#252522] overflow-hidden"${linkAttr}>
-        <div class="${aspect} overflow-hidden relative">
-          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-               src="${p.src}" alt="${p.title}" loading="lazy"/>
-          <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#002b02]/70 to-transparent">
-            <div class="flex justify-between items-end">
-              <div>
-                <span class="font-label text-white/80 text-xs uppercase tracking-widest mb-1 block">${p.source === "instagram" ? "Instagram" : "Flickr"}</span>
-                <h3 class="font-headline text-lg md:text-xl text-white font-bold">${p.title || "Observation"}</h3>
-                ${p.place ? `<p class="font-body text-white/70 text-sm mt-1">${p.place}</p>` : ""}
-              </div>
-              ${p.date ? `<span class="font-label text-white/50 text-[10px] uppercase tracking-widest hidden md:block">${p.date}</span>` : ""}
-            </div>
-          </div>
-        </div>
-      </${tag}>
-    `;
-  }).join("");
+function normalizeSpecies(title) {
+  let s = title
+    .replace(/[.,!]+$/g, "")                          // trailing punctuation
+    .replace(/\s*-\s*(greentown|pica).*$/i, "")        // strip location/latin suffixes
+    .replace(/watching me from the brambles/i, "")
+    .replace(/,\s*(water bath|worm)/i, "")
+    .replace(/also known as.*$/i, "").trim();
+  // Normalize casing/hyphens
+  s = s.replace(/\bgrey\b/i, "Gray");
+  s = s.replace(/\bdark\s+eyed\b/i, "Dark-eyed");
+  s = s.replace(/\bred\s+breasted\b/i, "Red-breasted");
+  s = s.replace(/\bblack\s+capped\b/i, "Black-capped");
+  s = s.replace(/\bring\s*-?\s*necked\b/i, "Ring-necked");
+  s = s.replace(/\bwhite\s+crowned\b/i, "White-crowned");
+  // Singularize common plurals
+  s = s.replace(/\b(Robin|Junco|Duck|Geese|Sparrow|Goose|Pelican)s\b/i, "$1");
+  // "Great white pelicans of St. James's Park" → "Great White Pelican"
+  s = s.replace(/\s+of\s+.*$/i, "");
+  // "Hawaiian goose, also known as nēnē" → "Hawaiian Goose"
+  s = s.replace(/,\s*$/, "");
+  // Title-case each word
+  s = s.replace(/\b\w/g, c => c.toUpperCase()).trim();
+  // Merge compound sightings like "American Robin & Northern Flicker"
+  return s;
 }
 
-// Filters
-document.getElementById("filters").addEventListener("click", e => {
-  const btn = e.target.closest(".filter-btn");
-  if (!btn) return;
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("is-active"));
-  btn.classList.add("is-active");
-  renderGallery(btn.dataset.filter);
+function isExcluded(normalized) {
+  return EXCLUDE.has(normalized.toLowerCase());
+}
+
+// ── Build species map ──
+const speciesMap = new Map();
+
+PHOTOS.forEach(p => {
+  if (!p.title) return;
+  // Split compound titles (e.g., "American Robin & Northern Flicker", "House finch and dark eyed Junco")
+  const parts = p.title.split(/\s*[&]\s*|\s+and\s+/i);
+  parts.forEach(part => {
+    const norm = normalizeSpecies(part.trim());
+    if (!norm || isExcluded(norm)) return;
+    if (!speciesMap.has(norm)) {
+      speciesMap.set(norm, { species: norm, firstDate: p.date, firstPlace: p.place, count: 0 });
+    }
+    const entry = speciesMap.get(norm);
+    entry.count++;
+    if (p.date && (!entry.firstDate || p.date < entry.firstDate)) {
+      entry.firstDate = p.date;
+      entry.firstPlace = p.place;
+    }
+  });
 });
 
-renderGallery("all");
+let lifeList = [...speciesMap.values()].sort((a, b) => a.species.localeCompare(b.species));
+
+// ── Stats ──
+const uniquePlaces = new Set();
+PHOTOS.forEach(p => { if (p.place) uniquePlaces.add(p.place); });
+
+document.getElementById("stats").innerHTML = [
+  { label: "Species", value: lifeList.length },
+  { label: "Observations", value: PHOTOS.filter(p => !isExcluded(normalizeSpecies(p.title || ""))).length },
+  { label: "Locations", value: uniquePlaces.size },
+].map(s => `
+  <div class="stat-card rounded-xl px-6 py-4">
+    <p class="font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 mb-1">${s.label}</p>
+    <p class="font-headline font-black text-3xl text-primary dark:text-primary-fixed-dim">${s.value}</p>
+  </div>
+`).join("");
+
+// ── Render table ──
+function formatDate(d) {
+  if (!d) return "—";
+  const [y, m, day] = d.split("-");
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${months[+m - 1]} ${+day}, ${y}`;
+}
+
+function renderTable(data) {
+  document.getElementById("lifelist-body").innerHTML = data.map((entry, i) => `
+    <tr>
+      <td class="py-3 pr-4 font-label text-sm text-on-surface-variant dark:text-stone-500 tabular-nums">${i + 1}</td>
+      <td class="py-3 pr-4 font-headline font-bold text-on-surface dark:text-[#fcf9f4]">${entry.species}</td>
+      <td class="py-3 pr-4 font-body text-sm text-on-surface-variant dark:text-stone-400 tabular-nums">${formatDate(entry.firstDate)}</td>
+      <td class="py-3 pr-4 font-body text-sm text-on-surface-variant dark:text-stone-400">${entry.firstPlace || "—"}</td>
+      <td class="py-3 pr-4 font-body text-sm text-on-surface-variant dark:text-stone-400 text-right tabular-nums">${entry.count}</td>
+    </tr>
+  `).join("");
+}
+
+renderTable(lifeList);
+
+// ── Sorting ──
+let currentSort = { key: "species", asc: true };
+
+document.querySelectorAll(".sortable").forEach(th => {
+  th.addEventListener("click", () => {
+    const key = th.dataset.sort;
+    if (currentSort.key === key) {
+      currentSort.asc = !currentSort.asc;
+    } else {
+      currentSort = { key, asc: true };
+    }
+    // Update arrows
+    document.querySelectorAll(".sort-arrow").forEach(el => el.textContent = "");
+    const arrow = th.querySelector(".sort-arrow");
+    if (arrow) arrow.textContent = currentSort.asc ? " ▲" : " ▼";
+
+    const sorted = [...lifeList].sort((a, b) => {
+      let va, vb;
+      switch (key) {
+        case "index":
+        case "species": va = a.species; vb = b.species; break;
+        case "date": va = a.firstDate || ""; vb = b.firstDate || ""; break;
+        case "location": va = a.firstPlace || ""; vb = b.firstPlace || ""; break;
+        case "count": return currentSort.asc ? a.count - b.count : b.count - a.count;
+      }
+      const cmp = va.localeCompare(vb);
+      return currentSort.asc ? cmp : -cmp;
+    });
+    renderTable(sorted);
+  });
+});
 </script>
 </body>
 </html>
