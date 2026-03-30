@@ -421,20 +421,6 @@ const PHOTOS = [
     flickrUrl: "https://www.flickr.com/photos/7365532@N06/55013592965/",
   },
   {
-    id: "fl-15", source: "flickr",
-    src: "https://live.staticflickr.com/65535/55013538319_bbd8f954fd.jpg",
-    title: "American Coot",
-    date: "", place: "",
-    flickrUrl: "https://www.flickr.com/photos/7365532@N06/55013538319/",
-  },
-  {
-    id: "fl-16", source: "flickr",
-    src: "https://live.staticflickr.com/65535/55013538289_6c32bf2ac1_z.jpg",
-    title: "American Coot",
-    date: "", place: "",
-    flickrUrl: "https://www.flickr.com/photos/7365532@N06/55013538289/",
-  },
-  {
     id: "fl-17", source: "flickr",
     src: "https://live.staticflickr.com/65535/55012394842_9e2eb2fa2d.jpg",
     title: "Northern Flicker",
