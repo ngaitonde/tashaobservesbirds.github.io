@@ -21,6 +21,14 @@ body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
 .popup-title{margin:0 0 6px;font-family:'Noto Serif',serif;font-size:1rem;color:#002b02;}
 .dark .popup-title{color:#a1d494;}
 .popup-thumb{width:100%;border-radius:4px;margin-top:6px;}
+.popup-carousel{position:relative;}
+.popup-carousel img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;display:block;}
+.popup-nav{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.5);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;z-index:10;transition:background 0.2s;}
+.popup-nav:hover{background:rgba(0,0,0,0.7);}
+.popup-nav.prev{left:4px;}
+.popup-nav.next{right:4px;}
+.popup-counter{text-align:center;font-size:0.7rem;color:#77574d;margin-top:4px;font-family:'Manrope',sans-serif;}
+.dark .popup-counter{color:#a8a29e;}
 </style>
 </head>
 <body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden dark:bg-[#1c1c19] dark:text-[#fcf9f4] transition-colors">
@@ -160,19 +168,64 @@ MAP_PLACES.forEach((place, idx) => {
   const popupContent = `
     <div style="max-width:220px">
       <h3 class="popup-title">${place.label}</h3>
-      ${titles.map(t => `<p style="margin:2px 0;font-size:0.85rem;">${t}</p>`).join("")}
-      ${firstPhoto ? `<img class="popup-thumb" src="${firstPhoto.src}" alt="${firstPhoto.title}" loading="lazy"/>` : ""}
+      ${placePhotos.length > 0 ? `
+      <div class="popup-carousel" data-place="${place.id}">
+        ${placePhotos.map((ph, pi) => `
+          <img class="popup-slide" src="${ph.src}" alt="${ph.title}" data-idx="${pi}" style="${pi > 0 ? 'display:none' : ''}"/>
+        `).join("")}
+        ${placePhotos.length > 1 ? `
+          <button class="popup-nav prev" data-dir="-1">&#8249;</button>
+          <button class="popup-nav next" data-dir="1">&#8250;</button>
+        ` : ""}
+        <p class="popup-counter"><span class="popup-cur">1</span> / ${placePhotos.length}</p>
+        <p class="popup-caption" style="margin:4px 0 0;font-size:0.8rem;font-style:italic;">${placePhotos[0]?.title || ""}</p>
+      </div>` : ""}
     </div>
   `;
 
   const marker = L.marker([place.lat, place.lng]).addTo(map);
-  marker.bindPopup(popupContent);
+  marker.bindPopup(popupContent, { maxWidth: 240, minWidth: 200 });
   markersByPlace[place.id] = marker;
 });
 
 // Fit map to all markers
 const bounds = L.latLngBounds(MAP_PLACES.map(p => [p.lat, p.lng]));
 map.fitBounds(bounds, { padding: [60, 60] });
+
+// Carousel navigation inside popups
+map.on("popupopen", function(e) {
+  const container = e.popup.getElement();
+  if (!container) return;
+  const carousel = container.querySelector(".popup-carousel");
+  if (!carousel) return;
+
+  const slides = carousel.querySelectorAll(".popup-slide");
+  const counter = carousel.querySelector(".popup-cur");
+  const caption = carousel.querySelector(".popup-caption");
+  if (slides.length <= 1) return;
+
+  let cur = 0;
+
+  function showSlide(idx) {
+    slides.forEach(s => s.style.display = "none");
+    slides[idx].style.display = "block";
+    if (counter) counter.textContent = idx + 1;
+    if (caption) caption.textContent = slides[idx].alt || "";
+    cur = idx;
+    e.popup.update();
+  }
+
+  carousel.addEventListener("click", function(ev) {
+    const btn = ev.target.closest(".popup-nav");
+    if (!btn) return;
+    ev.stopPropagation();
+    const dir = parseInt(btn.dataset.dir);
+    let next = cur + dir;
+    if (next < 0) next = slides.length - 1;
+    if (next >= slides.length) next = 0;
+    showSlide(next);
+  });
+});
 </script>
 </body>
 </html>
