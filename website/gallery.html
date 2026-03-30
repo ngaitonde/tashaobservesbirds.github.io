@@ -222,12 +222,6 @@ function renderGallery() {
           ${date || place ? `<p class="text-white/70 text-xs font-label uppercase tracking-widest">${[date, place].filter(Boolean).join(" · ")}</p>` : ""}
           <span class="text-white/40 text-[10px] font-label uppercase tracking-widest mt-1 block">${sourceLabel}</span>
         </div>
-        <!-- Always-visible caption below image for accessibility -->
-        <div class="p-4 bg-surface-container-low dark:bg-[#252522] transition-colors">
-          <h3 class="font-['Noto_Serif'] font-bold text-primary dark:text-primary-fixed-dim text-sm leading-snug mb-1">${title}</h3>
-          <p class="text-on-surface-variant dark:text-stone-400 text-xs font-label">${[date, place].filter(Boolean).join(" · ") || ""}</p>
-          <span class="text-secondary dark:text-stone-500 text-[10px] font-label uppercase tracking-widest">${sourceLabel}</span>
-        </div>
       </div>
     `;
   }).join("");
