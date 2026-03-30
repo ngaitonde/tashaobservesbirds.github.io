@@ -304,19 +304,19 @@ const PHOTOS = [
     id: "ig-48", source: "instagram",
     src: "../instagram/media/posts/202512/18065131205544477.jpg",
     title: "White crowned sparrow",
-    date: "2025-12-30", place: "",
+    date: "2025-12-30", place: "Diablo Lake, WA",
   },
   {
     id: "ig-49", source: "instagram",
     src: "../instagram/media/posts/202512/18090954424768543.jpg",
-    title: "White crowned sparrow",
-    date: "2025-12-30", place: "",
+    title: "American Robin",
+    date: "2025-12-30", place: "Diablo Lake, WA",
   },
   {
     id: "ig-50", source: "instagram",
     src: "../instagram/media/posts/202512/18308337574270334.jpg",
-    title: "White crowned sparrow",
-    date: "2025-12-30", place: "",
+    title: "American Robin",
+    date: "2025-12-30", place: "Diablo Lake, WA",
   },
 
   // ── Flickr photostream ──
@@ -535,14 +535,14 @@ const PHOTOS = [
   {
     id: "fl-31", source: "flickr",
     src: "https://live.staticflickr.com/65535/54618507608_4cec1b97a1_z.jpg",
-    title: "American Robin",
+    title: "Squirrel",
     date: "", place: "",
     flickrUrl: "https://www.flickr.com/photos/7365532@N06/54618507608/",
   },
   {
     id: "fl-32", source: "flickr",
     src: "https://live.staticflickr.com/65535/54618507563_a024c57416_w.jpg",
-    title: "American Robin",
+    title: "Squirrel",
     date: "", place: "",
     flickrUrl: "https://www.flickr.com/photos/7365532@N06/54618507563/",
   },
