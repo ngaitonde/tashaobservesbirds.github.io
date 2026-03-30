@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gallery — Tasha Observes Birds</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary-container":"#fed3c7","inverse-primary":"#a1d494","background":"#fcf9f4","surface-tint":"#3b6934","primary-fixed-dim":"#a1d494","tertiary":"#341e16","tertiary-container":"#4c332a","outline":"#72796e","surface-container-lowest":"#ffffff","surface-container":"#f0ede9","primary-container":"#154212","primary-fixed":"#bcf0ae","on-tertiary-container":"#be9b8f","surface-dim":"#dcdad5","surface-container-highest":"#e5e2dd","surface-container-high":"#ebe8e3","on-secondary":"#ffffff","outline-variant":"#c2c9bb","on-primary-container":"#7eaf73","secondary":"#77574d","on-surface-variant":"#42493e","surface-variant":"#e5e2dd","on-tertiary":"#ffffff","inverse-surface":"#31302d","on-background":"#1c1c19","surface":"#fcf9f4","on-surface":"#1c1c19","primary":"#002b02","on-primary":"#ffffff","surface-container-low":"#f6f3ee","on-secondary-container":"#795950"},fontFamily:{headline:["Noto Serif"],body:["Manrope"],label:["Manrope"]},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"}}}};
+</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
+.dark body, html.dark body{background:#1c1c19;color:#fcf9f4}
+
+/* Filter pills */
+.filter-pill{background:rgba(255,255,255,0.7);color:#77574d;border:1px solid transparent;transition:all .2s}
+.filter-pill.active,.filter-pill:hover{background:#002b02;color:#fff}
+.dark .filter-pill{background:rgba(255,255,255,0.08);color:#a8a29e}
+.dark .filter-pill.active,.dark .filter-pill:hover{background:#386b35;color:#fff}
+
+/* Photo card */
+.photo-card{position:relative;overflow:hidden;border-radius:0.75rem;cursor:pointer}
+.photo-card img{transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+.photo-card:hover img{transform:scale(1.05)}
+.photo-card .card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 50%);opacity:0;transition:opacity .35s}
+.photo-card:hover .card-overlay,.photo-card:focus-within .card-overlay{opacity:1}
+.photo-card .card-info{position:absolute;bottom:0;left:0;right:0;padding:1.25rem;transform:translateY(8px);opacity:0;transition:all .35s}
+.photo-card:hover .card-info,.photo-card:focus-within .card-info{transform:translateY(0);opacity:1}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.lightbox.open{display:flex;opacity:1}
+.lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:0.5rem}
+</style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-secondary-container dark:bg-[#1c1c19] dark:text-[#fcf9f4] transition-colors">
+
+<!-- ══ NAV ══ -->
+<nav class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 dark:bg-[#1c1c19]/80 backdrop-blur-md shadow-sm dark:shadow-none transition-colors">
+  <div class="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+    <div class="flex items-center gap-12">
+      <a class="font-['Noto_Serif'] italic font-black text-2xl text-[#154212] dark:text-[#386b35]" href="index.html">Tasha Observes Birds</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="index.html">Home</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="journal.html">Journal</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#154212] dark:text-[#386b35] border-b-2 border-[#154212] dark:border-[#386b35] pb-1" href="gallery.html">Gallery</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="lifelist.html">Life List</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="map.html">Map</a>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="p-2 hover:bg-[#154212]/5 dark:hover:bg-white/5 rounded-lg transition-all" aria-label="Toggle dark mode">
+      <span class="material-symbols-outlined text-[#154212] dark:text-[#386b35] dark:hidden">dark_mode</span>
+      <span class="material-symbols-outlined text-[#386b35] hidden dark:inline">light_mode</span>
+    </button>
+  </div>
+</nav>
+
+<main class="pt-32 pb-20 px-8 max-w-screen-2xl mx-auto">
+
+  <!-- ══ HEADER ══ -->
+  <header class="mb-12 max-w-3xl">
+    <span class="font-label text-secondary dark:text-stone-400 uppercase tracking-[0.2em] text-xs mb-4 block">Bird Photography</span>
+    <h1 class="font-headline font-black text-6xl text-primary dark:text-primary-fixed-dim leading-tight mb-6 tracking-tight">
+      Gallery
+    </h1>
+    <p class="text-on-surface-variant dark:text-stone-400 text-lg leading-relaxed max-w-xl">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Every photograph tells the story of a moment in the field.
+    </p>
+  </header>
+
+  <!-- ══ TOOLBAR ══ -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+    <!-- Source filters -->
+    <div class="flex flex-wrap gap-3" id="source-filters">
+      <button class="filter-pill active px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest" data-source="all">All <span class="opacity-60 ml-1" id="count-all"></span></button>
+      <button class="filter-pill px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest" data-source="instagram">Instagram <span class="opacity-60 ml-1" id="count-ig"></span></button>
+      <button class="filter-pill px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest" data-source="flickr">Flickr <span class="opacity-60 ml-1" id="count-fl"></span></button>
+    </div>
+    <!-- Sort -->
+    <div class="flex items-center gap-3">
+      <span class="font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400">Sort</span>
+      <select id="sort-select" class="bg-surface-container-low dark:bg-[#252522] text-on-surface dark:text-[#fcf9f4] border border-outline-variant/30 dark:border-white/10 rounded-lg px-4 py-2 text-sm font-label focus:ring-2 focus:ring-primary dark:focus:ring-primary-fixed-dim outline-none transition-colors">
+        <option value="name-asc">Name A–Z</option>
+        <option value="name-desc">Name Z–A</option>
+        <option value="date-new">Newest First</option>
+        <option value="date-old">Oldest First</option>
+        <option value="place">By Location</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ══ GALLERY GRID ══ -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="gallery-grid"></div>
+
+  <!-- Empty state -->
+  <div id="empty-state" class="hidden py-24 text-center">
+    <span class="material-symbols-outlined text-6xl text-outline-variant dark:text-stone-600 mb-4 block">photo_camera</span>
+    <p class="text-on-surface-variant dark:text-stone-400 text-lg">No photos match this filter.</p>
+  </div>
+
+</main>
+
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox" id="lightbox">
+  <button class="absolute top-6 right-6 text-white/80 hover:text-white transition-colors z-10" id="lb-close" aria-label="Close">
+    <span class="material-symbols-outlined text-4xl">close</span>
+  </button>
+  <button class="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors z-10" id="lb-prev" aria-label="Previous">
+    <span class="material-symbols-outlined text-5xl">chevron_left</span>
+  </button>
+  <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors z-10" id="lb-next" aria-label="Next">
+    <span class="material-symbols-outlined text-5xl">chevron_right</span>
+  </button>
+  <div class="flex flex-col items-center">
+    <img id="lb-img" src="" alt=""/>
+    <div class="mt-4 text-center max-w-lg">
+      <h3 id="lb-title" class="font-['Noto_Serif'] text-white text-xl font-bold"></h3>
+      <div class="flex items-center justify-center gap-4 mt-2">
+        <span id="lb-date" class="text-white/60 text-sm font-label uppercase tracking-widest"></span>
+        <span id="lb-place" class="text-white/60 text-sm font-label uppercase tracking-widest"></span>
+      </div>
+      <span id="lb-source" class="inline-block mt-2 text-white/40 text-[10px] font-label uppercase tracking-widest"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer class="w-full border-t border-[#77574d]/10 dark:border-white/5 bg-[#fcf9f4] dark:bg-[#1c1c19] transition-colors">
+  <div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 max-w-screen-2xl mx-auto">
+    <div class="mb-8 md:mb-0 text-center md:text-left">
+      <span class="font-['Noto_Serif'] font-bold text-[#154212] dark:text-[#386b35] text-xl block mb-2">Tasha Observes Birds</span>
+      <p class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80">The Digital Field Journal</p>
+    </div>
+    <div class="flex gap-12">
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="index.html">Home</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="journal.html">Journal</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="lifelist.html">Life List</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="map.html">Map</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+const grid = document.getElementById("gallery-grid");
+const emptyState = document.getElementById("empty-state");
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lb-img");
+const lbTitle = document.getElementById("lb-title");
+const lbDate = document.getElementById("lb-date");
+const lbPlace = document.getElementById("lb-place");
+const lbSource = document.getElementById("lb-source");
+
+let currentFilter = "all";
+let currentSort = "name-asc";
+let filteredPhotos = [];
+let lbIndex = 0;
+
+// Counts
+document.getElementById("count-all").textContent = `(${PHOTOS.length})`;
+document.getElementById("count-ig").textContent = `(${PHOTOS.filter(p => p.source === "instagram").length})`;
+document.getElementById("count-fl").textContent = `(${PHOTOS.filter(p => p.source === "flickr").length})`;
+
+function formatDate(d) {
+  if (!d) return "";
+  const parts = d.split("-");
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${months[parseInt(parts[1],10)-1]} ${parseInt(parts[2],10)}, ${parts[0]}`;
+}
+
+function sortPhotos(photos, sort) {
+  const sorted = [...photos];
+  switch (sort) {
+    case "name-asc":
+      return sorted.sort((a,b) => (a.title||"Untitled").localeCompare(b.title||"Untitled"));
+    case "name-desc":
+      return sorted.sort((a,b) => (b.title||"Untitled").localeCompare(a.title||"Untitled"));
+    case "date-new":
+      return sorted.sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    case "date-old":
+      return sorted.sort((a,b) => (a.date||"9999").localeCompare(b.date||"9999"));
+    case "place":
+      return sorted.sort((a,b) => (a.place||"zzz").localeCompare(b.place||"zzz"));
+    default:
+      return sorted;
+  }
+}
+
+function renderGallery() {
+  const filtered = currentFilter === "all" ? PHOTOS : PHOTOS.filter(p => p.source === currentFilter);
+  filteredPhotos = sortPhotos(filtered, currentSort);
+
+  if (filteredPhotos.length === 0) {
+    grid.innerHTML = "";
+    emptyState.classList.remove("hidden");
+    return;
+  }
+  emptyState.classList.add("hidden");
+
+  grid.innerHTML = filteredPhotos.map((p, i) => {
+    const title = p.title || "Observation";
+    const date = formatDate(p.date);
+    const place = p.place || "";
+    const sourceLabel = p.source === "instagram" ? "Instagram" : "Flickr";
+    const linkOpen = p.flickrUrl ? `<a href="${p.flickrUrl}" target="_blank" rel="noreferrer" class="absolute top-3 right-3 z-10 bg-black/40 hover:bg-black/60 text-white/80 hover:text-white rounded-full w-8 h-8 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-base">open_in_new</span></a>` : "";
+
+    return `
+      <div class="photo-card group" data-index="${i}" tabindex="0">
+        ${linkOpen}
+        <div class="aspect-[4/5] bg-surface-container dark:bg-[#252522]">
+          <img class="w-full h-full object-cover" src="${p.src}" alt="${title}" loading="lazy"/>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-info">
+          <h3 class="font-['Noto_Serif'] text-white font-bold text-base leading-snug mb-1">${title}</h3>
+          ${date || place ? `<p class="text-white/70 text-xs font-label uppercase tracking-widest">${[date, place].filter(Boolean).join(" · ")}</p>` : ""}
+          <span class="text-white/40 text-[10px] font-label uppercase tracking-widest mt-1 block">${sourceLabel}</span>
+        </div>
+        <!-- Always-visible caption below image for accessibility -->
+        <div class="p-4 bg-surface-container-low dark:bg-[#252522] transition-colors">
+          <h3 class="font-['Noto_Serif'] font-bold text-primary dark:text-primary-fixed-dim text-sm leading-snug mb-1">${title}</h3>
+          <p class="text-on-surface-variant dark:text-stone-400 text-xs font-label">${[date, place].filter(Boolean).join(" · ") || ""}</p>
+          <span class="text-secondary dark:text-stone-500 text-[10px] font-label uppercase tracking-widest">${sourceLabel}</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// ── Filters ──
+document.getElementById("source-filters").addEventListener("click", e => {
+  const btn = e.target.closest(".filter-pill");
+  if (!btn) return;
+  document.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  currentFilter = btn.dataset.source;
+  renderGallery();
+});
+
+// ── Sort ──
+document.getElementById("sort-select").addEventListener("change", e => {
+  currentSort = e.target.value;
+  renderGallery();
+});
+
+// ── Lightbox ──
+function openLightbox(idx) {
+  lbIndex = idx;
+  updateLightbox();
+  lightbox.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  document.body.style.overflow = "";
+}
+function updateLightbox() {
+  const p = filteredPhotos[lbIndex];
+  lbImg.src = p.src;
+  lbImg.alt = p.title || "Observation";
+  lbTitle.textContent = p.title || "Observation";
+  lbDate.textContent = formatDate(p.date);
+  lbPlace.textContent = p.place || "";
+  lbSource.textContent = p.source === "instagram" ? "Instagram" : "Flickr";
+}
+
+grid.addEventListener("click", e => {
+  const link = e.target.closest("a");
+  if (link) return; // let external links through
+  const card = e.target.closest(".photo-card");
+  if (!card) return;
+  openLightbox(parseInt(card.dataset.index, 10));
+});
+
+document.getElementById("lb-close").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
+document.getElementById("lb-prev").addEventListener("click", () => {
+  lbIndex = (lbIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
+  updateLightbox();
+});
+document.getElementById("lb-next").addEventListener("click", () => {
+  lbIndex = (lbIndex + 1) % filteredPhotos.length;
+  updateLightbox();
+});
+document.addEventListener("keydown", e => {
+  if (!lightbox.classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") { lbIndex = (lbIndex - 1 + filteredPhotos.length) % filteredPhotos.length; updateLightbox(); }
+  if (e.key === "ArrowRight") { lbIndex = (lbIndex + 1) % filteredPhotos.length; updateLightbox(); }
+});
+
+renderGallery();
+</script>
+</body>
+</html>
