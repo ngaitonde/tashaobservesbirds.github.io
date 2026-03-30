@@ -535,14 +535,14 @@ const PHOTOS = [
   {
     id: "fl-31", source: "flickr",
     src: "https://live.staticflickr.com/65535/54618507608_4cec1b97a1_z.jpg",
-    title: "Squirrel",
+    title: "American Robin",
     date: "", place: "",
     flickrUrl: "https://www.flickr.com/photos/7365532@N06/54618507608/",
   },
   {
     id: "fl-32", source: "flickr",
     src: "https://live.staticflickr.com/65535/54618507563_a024c57416_w.jpg",
-    title: "Squirrel",
+    title: "American Robin",
     date: "", place: "",
     flickrUrl: "https://www.flickr.com/photos/7365532@N06/54618507563/",
   },
