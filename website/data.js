@@ -117,25 +117,25 @@ const PHOTOS = [
   {
     id: "ig-17", source: "instagram",
     src: "../instagram/media/posts/202602/17937981087015367.jpg",
-    title: "Eurasian magpie — pica pica",
+    title: "Eurasian magpie - pica pica",
     date: "2026-02-28", place: "",
   },
   {
     id: "ig-18", source: "instagram",
     src: "../instagram/media/posts/202602/17936184312175102.jpg",
-    title: "Eurasian magpie — pica pica",
+    title: "Eurasian magpie - pica pica",
     date: "2026-02-28", place: "",
   },
   {
     id: "ig-19", source: "instagram",
     src: "../instagram/media/posts/202602/18106877452806749.jpg",
-    title: "Eurasian magpie — pica pica",
+    title: "Eurasian magpie - pica pica",
     date: "2026-02-28", place: "",
   },
   {
     id: "ig-20", source: "instagram",
     src: "../instagram/media/posts/202602/18066172199295602.jpg",
-    title: "Eurasian magpie — pica pica",
+    title: "Eurasian magpie - pica pica",
     date: "2026-02-28", place: "",
   },
   {
@@ -331,7 +331,7 @@ const PHOTOS = [
   {
     id: "fl-02", source: "flickr",
     src: "https://live.staticflickr.com/65535/54652489306_af3fc6bfc6_z.jpg",
-    title: "Gray Catbird — Greentown, PA",
+    title: "Gray Catbird - Greentown, PA",
     date: "", place: "Greentown, PA",
     lat: 41.321755, lng: -75.305459,
     flickrUrl: "https://www.flickr.com/photos/7365532@N06/54652489306/",
