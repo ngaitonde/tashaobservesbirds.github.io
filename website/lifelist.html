@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Life List — Tasha Observes Birds</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary-container":"#fed3c7","background":"#fcf9f4","surface-tint":"#3b6934","primary-fixed-dim":"#a1d494","tertiary":"#341e16","tertiary-container":"#4c332a","outline":"#72796e","surface-container-lowest":"#ffffff","surface-container":"#f0ede9","primary-container":"#154212","primary-fixed":"#bcf0ae","on-tertiary-container":"#be9b8f","surface-dim":"#dcdad5","surface-container-highest":"#e5e2dd","surface-container-high":"#ebe8e3","on-secondary":"#ffffff","outline-variant":"#c2c9bb","on-primary-container":"#7eaf73","secondary":"#77574d","on-surface-variant":"#42493e","surface-variant":"#e5e2dd","on-tertiary":"#ffffff","inverse-surface":"#31302d","on-background":"#1c1c19","surface":"#fcf9f4","on-surface":"#1c1c19","primary":"#002b02","on-primary":"#ffffff","surface-container-low":"#f6f3ee","on-secondary-container":"#795950"},fontFamily:{headline:["Noto Serif"],body:["Manrope"],label:["Manrope"]},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"}}}};
+</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.editorial-shadow{box-shadow:0 24px 48px -12px rgba(28,28,25,0.06)}
+.glass-nav{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
+.dark body, html.dark body{background:#1c1c19;color:#fcf9f4}
+</style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-secondary-container dark:bg-[#1c1c19] dark:text-[#fcf9f4] transition-colors">
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 dark:bg-[#1c1c19]/80 glass-nav shadow-sm dark:shadow-none transition-colors">
+  <div class="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+    <div class="flex items-center gap-12">
+      <a class="font-['Noto_Serif'] italic font-black text-2xl text-[#154212] dark:text-[#386b35]" href="index.html">Tasha Observes Birds</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="index.html">Home</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="journal.html">Journal</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#154212] dark:text-[#386b35] border-b-2 border-[#154212] dark:border-[#386b35] pb-1" href="lifelist.html">Life List</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="map.html">Map</a>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="p-2 hover:bg-[#154212]/5 dark:hover:bg-white/5 rounded-lg transition-all" aria-label="Toggle dark mode">
+      <span class="material-symbols-outlined text-[#154212] dark:text-[#386b35] dark:hidden">dark_mode</span>
+      <span class="material-symbols-outlined text-[#386b35] hidden dark:inline">light_mode</span>
+    </button>
+  </div>
+</nav>
+
+<main class="pt-32 px-8 max-w-screen-2xl mx-auto">
+
+  <!-- HEADER -->
+  <header class="mb-16 max-w-3xl">
+    <span class="font-label text-secondary dark:text-stone-400 uppercase tracking-[0.2em] text-xs mb-4 block">Field Photography</span>
+    <h1 class="font-headline font-black text-6xl text-primary dark:text-primary-fixed-dim leading-tight mb-6 tracking-tight">
+      The Gallery of<br/><span class="italic font-normal">Avian Observation</span>
+    </h1>
+    <p class="text-on-surface-variant dark:text-stone-400 text-lg leading-relaxed max-w-xl">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.
+    </p>
+  </header>
+
+  <!-- FILTERS -->
+  <div class="flex flex-wrap gap-3 mb-10" id="filters">
+    <button class="filter-btn is-active px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all" data-filter="all">All</button>
+    <button class="filter-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all" data-filter="instagram">Instagram</button>
+    <button class="filter-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all" data-filter="flickr">Flickr</button>
+  </div>
+
+  <!-- BENTO GRID GALLERY -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-20" id="gallery"></div>
+
+  <!-- SOCIAL -->
+  <section class="mt-12 mb-12 py-20 bg-surface-container-low dark:bg-[#252522] rounded-xl px-12">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-8 md:mb-0">
+        <h2 class="font-headline text-3xl text-primary dark:text-primary-fixed-dim font-bold mb-2">Follow the Migration</h2>
+        <p class="text-on-surface-variant dark:text-stone-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+      <div class="flex space-x-6">
+        <a class="flex items-center space-x-3 group" href="https://www.flickr.com/photos/7365532@N06/" target="_blank" rel="noreferrer">
+          <div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+            <span class="material-symbols-outlined">filter_frames</span>
+          </div>
+          <div>
+            <p class="font-label text-xs text-secondary dark:text-stone-400 uppercase tracking-widest">Flickr</p>
+            <p class="font-bold text-primary dark:text-primary-fixed-dim">n_gaitonde</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="w-full border-t border-[#77574d]/10 dark:border-white/5 bg-[#fcf9f4] dark:bg-[#1c1c19] transition-colors">
+  <div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 max-w-screen-2xl mx-auto">
+    <div class="mb-8 md:mb-0">
+      <span class="font-['Noto_Serif'] font-bold text-[#154212] dark:text-[#386b35] text-xl block mb-2">Tasha Observes Birds</span>
+      <p class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80">The Digital Field Journal</p>
+    </div>
+    <div class="flex gap-8">
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="index.html">Home</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="journal.html">Journal</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="map.html">Map</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+.filter-btn{ background:rgba(255,255,255,0.7); color:#77574d; border:1px solid transparent; }
+.filter-btn.is-active,.filter-btn:hover{ background:#002b02; color:#fff; }
+.dark .filter-btn{ background:rgba(255,255,255,0.08); color:#a8a29e; }
+.dark .filter-btn.is-active,.dark .filter-btn:hover{ background:#386b35; color:#fff; }
+</style>
+
+<script src="data.js"></script>
+<script>
+const gallery = document.getElementById("gallery");
+
+// Bento-grid span patterns (repeating cycle of 6)
+const SPANS = [
+  "md:col-span-8", // wide
+  "md:col-span-4", // narrow
+  "md:col-span-4", // narrow
+  "md:col-span-4", // narrow
+  "md:col-span-4", // narrow
+  "md:col-span-12", // full-width split
+];
+
+function renderGallery(filter) {
+  const list = filter === "all" ? PHOTOS : PHOTOS.filter(p => p.source === filter);
+  gallery.innerHTML = list.map((p, i) => {
+    const span = SPANS[i % SPANS.length];
+    const aspect = span === "md:col-span-8" ? "aspect-[16/9]" :
+                   span === "md:col-span-12" ? "aspect-[21/9]" : "aspect-square";
+    const tag = p.flickrUrl ? "a" : "div";
+    const linkAttr = p.flickrUrl ? ` href="${p.flickrUrl}" target="_blank" rel="noreferrer"` : "";
+    return `
+      <${tag} class="${span} group rounded-lg editorial-shadow bg-surface-container-low dark:bg-[#252522] overflow-hidden"${linkAttr}>
+        <div class="${aspect} overflow-hidden relative">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+               src="${p.src}" alt="${p.title}" loading="lazy"/>
+          <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#002b02]/70 to-transparent">
+            <div class="flex justify-between items-end">
+              <div>
+                <span class="font-label text-white/80 text-xs uppercase tracking-widest mb-1 block">${p.source === "instagram" ? "Instagram" : "Flickr"}</span>
+                <h3 class="font-headline text-lg md:text-xl text-white font-bold">${p.title || "Observation"}</h3>
+                ${p.place ? `<p class="font-body text-white/70 text-sm mt-1">${p.place}</p>` : ""}
+              </div>
+              ${p.date ? `<span class="font-label text-white/50 text-[10px] uppercase tracking-widest hidden md:block">${p.date}</span>` : ""}
+            </div>
+          </div>
+        </div>
+      </${tag}>
+    `;
+  }).join("");
+}
+
+// Filters
+document.getElementById("filters").addEventListener("click", e => {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("is-active"));
+  btn.classList.add("is-active");
+  renderGallery(btn.dataset.filter);
+});
+
+renderGallery("all");
+</script>
+</body>
+</html>

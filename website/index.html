@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tasha Observes Birds</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "secondary-container":"#fed3c7","inverse-primary":"#a1d494","background":"#fcf9f4",
+        "surface-tint":"#3b6934","primary-fixed-dim":"#a1d494","tertiary":"#341e16",
+        "tertiary-container":"#4c332a","outline":"#72796e","surface-container-lowest":"#ffffff",
+        "surface-container":"#f0ede9","primary-container":"#154212","primary-fixed":"#bcf0ae",
+        "on-tertiary-container":"#be9b8f","surface-dim":"#dcdad5",
+        "surface-container-highest":"#e5e2dd","surface-container-high":"#ebe8e3",
+        "on-secondary":"#ffffff","outline-variant":"#c2c9bb","on-primary-container":"#7eaf73",
+        "secondary":"#77574d","on-surface-variant":"#42493e","surface-variant":"#e5e2dd",
+        "on-tertiary":"#ffffff","inverse-surface":"#31302d","on-background":"#1c1c19",
+        "surface":"#fcf9f4","on-surface":"#1c1c19","primary":"#002b02",
+        "on-primary":"#ffffff","surface-container-low":"#f6f3ee",
+        "on-secondary-container":"#795950"
+      },
+      fontFamily: { headline:["Noto Serif"], body:["Manrope"], label:["Manrope"] },
+      borderRadius: { DEFAULT:"0.25rem", lg:"0.5rem", xl:"0.75rem", full:"9999px" },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+.editorial-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:1.5rem; }
+body { background:#fcf9f4; color:#1c1c19; font-family:'Manrope',sans-serif; }
+.dark body, html.dark body { background:#1c1c19; color:#fcf9f4; }
+</style>
+</head>
+<body class="bg-background text-on-surface selection:bg-secondary-container dark:bg-[#1c1c19] dark:text-[#fcf9f4] transition-colors">
+
+<!-- ══ NAV ══ -->
+<nav class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 dark:bg-[#1c1c19]/80 backdrop-blur-md shadow-sm dark:shadow-none transition-colors">
+  <div class="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+    <div class="flex items-center gap-12">
+      <a class="font-['Noto_Serif'] italic font-black text-2xl text-[#154212] dark:text-[#386b35]" href="index.html">Tasha Observes Birds</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#154212] dark:text-[#386b35] border-b-2 border-[#154212] dark:border-[#386b35] pb-1" href="index.html">Home</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="journal.html">Journal</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="lifelist.html">Life List</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="map.html">Map</a>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="p-2 hover:bg-[#154212]/5 dark:hover:bg-white/5 rounded-lg transition-all" aria-label="Toggle dark mode">
+      <span class="material-symbols-outlined text-[#154212] dark:text-[#386b35] dark:hidden">dark_mode</span>
+      <span class="material-symbols-outlined text-[#386b35] hidden dark:inline">light_mode</span>
+    </button>
+  </div>
+</nav>
+
+<main class="pt-32 pb-20 px-8 max-w-screen-2xl mx-auto">
+
+  <!-- ══ HERO ══ -->
+  <header class="mb-24 flex flex-col md:flex-row items-end gap-12">
+    <div class="w-full md:w-7/12">
+      <h1 class="font-headline font-black text-6xl md:text-8xl text-primary dark:text-primary-fixed-dim leading-tight tracking-tighter mb-8">
+        Observations<br/><span class="italic font-normal text-secondary dark:text-stone-400">In the Wild</span>
+      </h1>
+      <p class="font-body text-xl text-on-surface-variant dark:text-stone-400 max-w-xl leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Donec id elit non mi porta gravida at eget metus.
+      </p>
+    </div>
+    <div class="w-full md:w-5/12 aspect-[4/5] bg-surface-container-high rounded overflow-hidden relative group">
+      <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+           src="../instagram/media/other/17909680770358425.jpg"
+           alt="Robin watching me from the brambles."/>
+      <div class="absolute bottom-6 left-6 bg-surface/90 dark:bg-[#252522]/90 backdrop-blur-md p-4 rounded shadow-sm">
+        <span class="font-label text-xs uppercase tracking-widest text-secondary dark:text-stone-400 mb-1 block">Featured</span>
+        <p class="font-headline font-bold text-primary dark:text-primary-fixed-dim">Robin watching me from the brambles.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ RECENT FIELD LOGS ══ -->
+  <section class="mb-32">
+    <div class="flex justify-between items-baseline mb-12 border-b border-outline-variant/20 pb-4">
+      <h2 class="font-headline text-3xl font-bold text-primary dark:text-primary-fixed-dim">Recent Field Logs</h2>
+      <a class="font-label text-sm uppercase tracking-widest text-secondary dark:text-stone-400 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors flex items-center gap-2" href="journal.html">
+        View Full Journal <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <div class="editorial-grid">
+      <!-- Main Featured Post -->
+      <div class="col-span-12 md:col-span-8 bg-surface-container-low dark:bg-[#252522] p-8 rounded-xl flex flex-col md:flex-row gap-8 items-center" style="box-shadow:0 24px 48px -12px rgba(28,28,25,0.06);">
+        <div class="w-full md:w-1/2 aspect-video md:aspect-square overflow-hidden rounded-lg">
+          <img class="w-full h-full object-cover" src="../instagram/media/other/18081430835033145.jpg" alt="Great white pelicans"/>
+        </div>
+        <div class="w-full md:w-1/2">
+          <div class="flex gap-2 mb-4">
+            <span class="bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full uppercase tracking-tighter">London</span>
+          </div>
+          <h3 class="font-headline text-4xl font-bold text-primary dark:text-primary-fixed-dim mb-4 leading-tight">Great white pelicans of St. James's Park</h3>
+          <p class="font-body text-on-surface-variant dark:text-stone-400 mb-6 leading-relaxed">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id dolor id nibh ultricies vehicula ut id elit.
+          </p>
+          <div class="flex items-center gap-4 text-secondary dark:text-stone-400 font-label text-xs uppercase tracking-widest">
+            <span>February 28, 2026</span>
+            <span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+            <span>St. James's Park, London</span>
+          </div>
+        </div>
+      </div>
+      <!-- Secondary Post -->
+      <div class="col-span-12 md:col-span-4 flex flex-col gap-6">
+        <div class="bg-surface-container-highest dark:bg-[#252522] p-6 rounded-xl" style="box-shadow:0 24px 48px -12px rgba(28,28,25,0.06);">
+          <div class="aspect-video mb-6 rounded-lg overflow-hidden">
+            <img class="w-full h-full object-cover" src="../instagram/media/other/18008399546665173.jpg" alt="Anna's Hummingbird"/>
+          </div>
+          <span class="font-label text-xs text-secondary dark:text-stone-400 uppercase tracking-widest mb-2 block">Field Log</span>
+          <h4 class="font-headline text-2xl font-bold text-primary dark:text-primary-fixed-dim mb-3">Anna's Hummingbird</h4>
+          <p class="font-body text-sm text-on-surface-variant dark:text-stone-400 mb-6">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras justo odio, dapibus ut facilisis in.
+          </p>
+          <div class="flex justify-between items-center">
+            <span class="font-label text-[10px] text-secondary/60 dark:text-stone-500 uppercase">December 30, 2025</span>
+            <a href="journal.html" class="text-primary dark:text-primary-fixed-dim hover:translate-x-1 transition-transform">
+              <span class="material-symbols-outlined">arrow_right_alt</span>
+            </a>
+          </div>
+        </div>
+        <!-- Stats -->
+        <div class="bg-primary p-6 rounded-xl text-on-primary">
+          <p class="font-label text-xs uppercase tracking-[0.2em] opacity-70 mb-4">Collection</p>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <span class="block text-3xl font-headline font-black" id="stat-total">0</span>
+              <span class="text-[10px] uppercase tracking-widest opacity-80">Total Images</span>
+            </div>
+            <div>
+              <span class="block text-3xl font-headline font-black" id="stat-places">0</span>
+              <span class="text-[10px] uppercase tracking-widest opacity-80">Mapped Places</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SEASONAL / FEATURE SECTION ══ -->
+  <section class="bg-surface-container-low dark:bg-[#252522] -mx-8 px-8 py-24 mb-32 rounded-[2rem]">
+    <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center gap-16">
+      <div class="w-full md:w-1/2 relative">
+        <div class="aspect-square bg-surface-container rounded-full absolute -top-12 -left-12 w-64 h-64 -z-10 opacity-50"></div>
+        <img class="rounded-2xl shadow-2xl relative z-10 w-full"
+             src="../instagram/media/other/18123805717567247.jpg"
+             alt="Hawaiian goose, also known as nēnē"/>
+      </div>
+      <div class="w-full md:w-1/2">
+        <span class="font-label text-sm uppercase tracking-[0.3em] text-secondary dark:text-stone-400 mb-4 block">Featured</span>
+        <h2 class="font-headline text-5xl font-bold text-primary dark:text-primary-fixed-dim mb-8 leading-tight">London Bird Encounters</h2>
+        <p class="font-body text-lg text-on-surface-variant dark:text-stone-400 mb-8 leading-relaxed">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit sit amet non magna.
+        </p>
+        <ul class="space-y-4 mb-10">
+          <li class="flex items-center gap-4 font-label text-sm text-primary dark:text-primary-fixed-dim uppercase font-bold">
+            <span class="w-2 h-2 bg-secondary dark:bg-stone-400 rounded-full"></span>Hawaiian goose (nēnē)
+          </li>
+          <li class="flex items-center gap-4 font-label text-sm text-primary dark:text-primary-fixed-dim uppercase font-bold">
+            <span class="w-2 h-2 bg-secondary dark:bg-stone-400 rounded-full"></span>Ring-necked parakeet
+          </li>
+          <li class="flex items-center gap-4 font-label text-sm text-primary dark:text-primary-fixed-dim uppercase font-bold">
+            <span class="w-2 h-2 bg-secondary dark:bg-stone-400 rounded-full"></span>Greylag geese
+          </li>
+        </ul>
+        <a href="lifelist.html" class="inline-block bg-primary text-on-primary px-8 py-4 rounded font-label uppercase tracking-widest text-sm hover:bg-primary-container transition-all active:scale-95">
+          View Life List
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LIFE LIST SNAPSHOT ══ -->
+  <section class="mb-32">
+    <h2 class="font-headline text-4xl font-bold text-primary dark:text-primary-fixed-dim mb-12 text-center">Life List Highlights</h2>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="life-list-grid"></div>
+  </section>
+
+  <!-- ══ ABOUT ME ══ -->
+  <section class="mb-32 max-w-3xl mx-auto text-center">
+    <span class="font-label text-sm uppercase tracking-widest text-secondary dark:text-stone-400 opacity-80">The Observer</span>
+    <h2 class="font-headline text-4xl font-bold text-primary dark:text-primary-fixed-dim mt-2 mb-8">About Me</h2>
+    <p class="text-on-surface-variant dark:text-stone-400 text-lg leading-relaxed mb-6">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    </p>
+    <p class="text-on-surface-variant dark:text-stone-400 text-lg leading-relaxed mb-8">
+      I have lived in the Pacific Northwest since 2008. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, nec cursus pede justo fringilla vel, aliquet nec.
+    </p>
+    <a href="mailto:tashaobservesbirds@gmail.com" class="inline-flex items-center gap-2 font-label text-sm uppercase tracking-widest text-primary dark:text-primary-fixed-dim hover:opacity-70 transition-opacity">
+      <span class="material-symbols-outlined text-base">mail</span>
+      tashaobservesbirds@gmail.com
+    </a>
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="w-full border-t border-[#77574d]/10 bg-[#fcf9f4] dark:bg-[#1c1c19] dark:border-white/5 transition-colors">
+  <div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 max-w-screen-2xl mx-auto">
+    <div class="mb-8 md:mb-0 text-center md:text-left">
+      <p class="font-['Noto_Serif'] font-bold text-[#154212] dark:text-[#386b35] text-xl mb-2">Tasha Observes Birds</p>
+      <p class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80">The Digital Field Journal</p>
+      <div class="flex justify-center md:justify-start gap-4 mt-4">
+        <a class="text-[#154212] hover:opacity-70 transition-opacity" href="https://www.flickr.com/photos/7365532@N06/" target="_blank" rel="noreferrer">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M13.2 12a4.8 4.8 0 1 1 9.6 0 4.8 4.8 0 0 1-9.6 0zM1.2 12a4.8 4.8 0 1 1 9.6 0 4.8 4.8 0 0 1-9.6 0z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="flex gap-12">
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="journal.html">Journal</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="lifelist.html">Life List</a>
+      <a class="font-['Manrope'] text-sm uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80 hover:opacity-100" href="map.html">Map</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+document.getElementById("stat-total").textContent = PHOTOS.length;
+document.getElementById("stat-places").textContent = MAP_PLACES.length;
+
+// Render 5 life-list highlights (first 5 with unique titles from GPS-tagged photos)
+const seen = new Set();
+const highlights = PHOTOS.filter(p => {
+  if (!p.title || seen.has(p.title)) return false;
+  seen.add(p.title);
+  return true;
+}).slice(0, 5);
+
+document.getElementById("life-list-grid").innerHTML = highlights.map(p => `
+  <div class="group relative aspect-[3/4] overflow-hidden rounded-lg">
+    <img class="w-full h-full object-cover transition-transform group-hover:scale-110"
+         src="${p.src}" alt="${p.title}" loading="lazy"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#002b02]/80 to-transparent flex flex-col justify-end p-4">
+      ${p.place ? `<span class="font-label text-[10px] text-white opacity-70 uppercase">${p.place}</span>` : ""}
+      <p class="font-headline text-white font-bold">${p.title}</p>
+    </div>
+  </div>
+`).join("");
+</script>
+</body>
+</html>

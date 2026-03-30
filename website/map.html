@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Map — Tasha Observes Birds</title>
+<script src="theme.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary-container":"#fed3c7","background":"#fcf9f4","surface-tint":"#3b6934","primary-fixed-dim":"#a1d494","tertiary":"#341e16","tertiary-container":"#4c332a","outline":"#72796e","surface-container-lowest":"#ffffff","surface-container":"#f0ede9","primary-container":"#154212","primary-fixed":"#bcf0ae","on-tertiary-container":"#be9b8f","surface-dim":"#dcdad5","surface-container-highest":"#e5e2dd","surface-container-high":"#ebe8e3","on-secondary":"#ffffff","outline-variant":"#c2c9bb","on-primary-container":"#7eaf73","secondary":"#77574d","on-surface-variant":"#42493e","surface-variant":"#e5e2dd","on-tertiary":"#ffffff","inverse-surface":"#31302d","on-background":"#1c1c19","surface":"#fcf9f4","on-surface":"#1c1c19","primary":"#002b02","on-primary":"#ffffff","surface-container-low":"#f6f3ee","on-secondary-container":"#795950"},fontFamily:{headline:["Noto Serif"],body:["Manrope"],label:["Manrope"]},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"}}}};
+</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+body{background:#fcf9f4;color:#1c1c19;font-family:'Manrope',sans-serif}
+.dark body, html.dark body{background:#1c1c19;color:#fcf9f4}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:rgba(245,239,228,0.96);color:#1c1c19;}
+.dark .leaflet-popup-content-wrapper,.dark .leaflet-popup-tip{background:rgba(37,37,34,0.96);color:#fcf9f4;}
+.popup-title{margin:0 0 6px;font-family:'Noto Serif',serif;font-size:1rem;color:#002b02;}
+.dark .popup-title{color:#a1d494;}
+.popup-thumb{width:100%;border-radius:4px;margin-top:6px;}
+</style>
+</head>
+<body class="font-body selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden dark:bg-[#1c1c19] dark:text-[#fcf9f4] transition-colors">
+
+<!-- NAV -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 dark:bg-[#1c1c19]/80 backdrop-blur-md shadow-sm dark:shadow-none transition-colors">
+  <nav class="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+    <div class="flex items-center gap-12">
+      <a class="font-['Noto_Serif'] italic font-black text-2xl text-[#154212] dark:text-[#386b35]" href="index.html">Tasha Observes Birds</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="index.html">Home</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="journal.html">Journal</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#77574d] dark:text-stone-400 hover:text-[#154212] dark:hover:text-[#386b35] transition-colors" href="lifelist.html">Life List</a>
+        <a class="font-['Noto_Serif'] font-bold text-lg text-[#154212] dark:text-[#386b35] border-b-2 border-[#154212] dark:border-[#386b35] pb-1" href="map.html">Map</a>
+      </div>
+    </div>
+    <button onclick="toggleTheme()" class="p-2 hover:bg-[#154212]/5 dark:hover:bg-white/5 rounded-lg transition-all" aria-label="Toggle dark mode">
+      <span class="material-symbols-outlined text-[#154212] dark:text-[#386b35] dark:hidden">dark_mode</span>
+      <span class="material-symbols-outlined text-[#386b35] hidden dark:inline">light_mode</span>
+    </button>
+  </nav>
+</header>
+
+<main class="pt-[72px] h-screen flex overflow-hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="w-full md:w-[400px] h-full bg-surface-container-low dark:bg-[#252522] overflow-y-auto z-20 flex-shrink-0 flex flex-col transition-colors">
+    <div class="p-8 space-y-8">
+      <header>
+        <span class="font-label text-sm uppercase tracking-widest text-secondary dark:text-stone-400 opacity-80">Sighting Records</span>
+        <h1 class="font-headline text-4xl font-black text-primary dark:text-primary-fixed-dim mt-2">Field Observations</h1>
+        <p class="text-on-surface-variant dark:text-stone-400 text-sm mt-3 leading-relaxed">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum.
+        </p>
+      </header>
+      <div class="space-y-6" id="sidebar-list"></div>
+    </div>
+    <!-- Sidebar footer -->
+    <footer class="mt-auto bg-surface-dim/30 dark:bg-[#1c1c19]/30 px-8 py-10 border-t border-secondary/10 dark:border-white/5 transition-colors">
+      <div class="font-['Noto_Serif'] font-bold text-[#154212] dark:text-[#386b35] mb-2">Tasha Observes Birds</div>
+      <p class="font-['Manrope'] text-xs uppercase tracking-widest text-[#77574d] dark:text-stone-400 opacity-80">The Digital Field Journal</p>
+    </footer>
+  </aside>
+
+  <!-- MAP -->
+  <section class="flex-grow relative h-full">
+    <div id="map" class="w-full h-full"></div>
+    <!-- Legend -->
+    <div class="absolute bottom-8 right-8 z-[1000]">
+      <div class="bg-surface/90 dark:bg-[#252522]/90 backdrop-blur-md p-4 rounded-lg shadow-sm dark:shadow-none max-w-[200px] transition-colors">
+        <h4 class="font-label text-[10px] uppercase tracking-widest text-secondary dark:text-stone-400 font-bold mb-3">Map Legend</h4>
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary dark:bg-primary-fixed-dim"></span>
+            <span class="text-xs text-on-surface dark:text-[#fcf9f4]">Photo locations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Mobile nav -->
+<nav class="md:hidden fixed bottom-0 w-full bg-[#fcf9f4]/95 dark:bg-[#1c1c19]/95 backdrop-blur-md z-50 flex justify-around items-center py-4 border-t border-secondary/5 dark:border-white/5 transition-colors">
+  <a href="index.html" class="flex flex-col items-center text-[#77574d] dark:text-stone-400">
+    <span class="material-symbols-outlined">home</span>
+    <span class="text-[10px] uppercase mt-1">Home</span>
+  </a>
+  <a href="journal.html" class="flex flex-col items-center text-[#77574d] dark:text-stone-400">
+    <span class="material-symbols-outlined">menu_book</span>
+    <span class="text-[10px] uppercase mt-1">Journal</span>
+  </a>
+  <a href="lifelist.html" class="flex flex-col items-center text-[#77574d] dark:text-stone-400">
+    <span class="material-symbols-outlined">photo_library</span>
+    <span class="text-[10px] uppercase mt-1">Life List</span>
+  </a>
+  <a href="map.html" class="flex flex-col items-center text-[#154212] dark:text-[#386b35]">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">map</span>
+    <span class="text-[10px] uppercase mt-1 font-bold">Map</span>
+  </a>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="data.js"></script>
+<script>
+// Build sidebar cards & map markers
+const sidebar = document.getElementById("sidebar-list");
+const map = L.map("map", { scrollWheelZoom: true }).setView([47.5, -40], 3);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 18,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+const markersByPlace = {};
+
+MAP_PLACES.forEach((place, idx) => {
+  const placePhotos = PHOTOS.filter(p =>
+    p.lat && p.lng &&
+    Math.abs(p.lat - place.lat) < 0.05 &&
+    Math.abs(p.lng - place.lng) < 0.05
+  );
+
+  const titles = [...new Set(placePhotos.map(p => p.title).filter(Boolean))];
+  const firstPhoto = placePhotos[0];
+
+  // Sidebar card
+  const card = document.createElement("article");
+  card.className = `group relative bg-surface dark:bg-[#1c1c19] p-5 rounded-lg transition-all duration-300 hover:shadow-xl hover:shadow-on-surface/5 cursor-pointer ${idx === 0 ? "ring-2 ring-primary dark:ring-primary-fixed-dim" : ""}`;
+  card.innerHTML = `
+    <div class="flex justify-between items-start mb-3">
+      <div>
+        <h3 class="font-headline text-xl font-bold text-primary dark:text-primary-fixed-dim">${place.label}</h3>
+        <p class="font-label text-sm text-secondary dark:text-stone-400">${placePhotos.length} image${placePhotos.length !== 1 ? "s" : ""}</p>
+      </div>
+    </div>
+    ${firstPhoto ? `
+    <div class="relative aspect-video rounded-lg overflow-hidden mb-3">
+      <img class="w-full h-full object-cover" src="${firstPhoto.src}" alt="${firstPhoto.title}" loading="lazy"/>
+    </div>` : ""}
+    ${titles.length > 0 ? `<p class="text-on-surface-variant dark:text-stone-400 text-sm italic leading-relaxed">${titles.slice(0, 3).join(", ")}</p>` : ""}
+  `;
+
+  card.addEventListener("click", () => {
+    map.flyTo([place.lat, place.lng], 13, { duration: 1 });
+    markersByPlace[place.id].openPopup();
+    sidebar.querySelectorAll("article").forEach(a => a.classList.remove("ring-2", "ring-primary", "dark:ring-primary-fixed-dim"));
+    card.classList.add("ring-2", "ring-primary", "dark:ring-primary-fixed-dim");
+  });
+
+  sidebar.appendChild(card);
+
+  // Map marker
+  const popupContent = `
+    <div style="max-width:220px">
+      <h3 class="popup-title">${place.label}</h3>
+      ${titles.map(t => `<p style="margin:2px 0;font-size:0.85rem;">${t}</p>`).join("")}
+      ${firstPhoto ? `<img class="popup-thumb" src="${firstPhoto.src}" alt="${firstPhoto.title}" loading="lazy"/>` : ""}
+    </div>
+  `;
+
+  const marker = L.marker([place.lat, place.lng]).addTo(map);
+  marker.bindPopup(popupContent);
+  markersByPlace[place.id] = marker;
+});
+
+// Fit map to all markers
+const bounds = L.latLngBounds(MAP_PLACES.map(p => [p.lat, p.lng]));
+map.fitBounds(bounds, { padding: [60, 60] });
+</script>
+</body>
+</html>
